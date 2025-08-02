@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-observability-deployment
+  namespace: ts-observability
+  labels:
+    app: ts-observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ts-observability
+  template:
+    metadata:
+      labels:
+        app: ts-observability
+    spec:
+      serviceAccountName: otel-sa
+      containers:
+        - name: ts-observability
+          image: asia-northeast1-docker.pkg.dev/gcp-test-467019/ts-observability-images/ts-observability-app:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector.ts-observability.svc.cluster.local:4318
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: http/protobuf
+            - name: OTEL_SERVICE_NAME
+              value: ts-observability-app
+            - name: GOOGLE_CLOUD_PROJECT
+              value: "gcp-test-467019"

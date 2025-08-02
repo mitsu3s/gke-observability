@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otel-collector-config
+  namespace: ts-observability
+data:
+  otel-collector-config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          http:
+            endpoint: 0.0.0.0:4318
+
+    exporters:
+      googlecloud:
+        project: gcp-test-467019
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          exporters: [googlecloud]

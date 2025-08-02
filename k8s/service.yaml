@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-observability-service
+  namespace: ts-observability
+spec:
+  type: LoadBalancer
+  selector:
+    app: ts-observability
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
