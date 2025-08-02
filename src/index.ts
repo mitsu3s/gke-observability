@@ -7,6 +7,7 @@ import {
 } from "@opentelemetry/api";
 
 import "./otel-exporter";
+import { logger } from "./otel-logs"; // ★ ロガー追加
 
 const app = express();
 const port = 3000;
@@ -23,6 +24,15 @@ app.get("/hello", async (_req, res) => {
   const duration = Date.now() - start;
 
   span.end();
+
+  logger.emit({
+    severityNumber: 9,
+    severityText: "INFO",
+    body: `Processed /hello in ${duration}ms`,
+    attributes: {
+      feature: "otel-logs",
+    },
+  });
 
   res.send(`Hello! CPU load done in ${duration}ms`);
 });

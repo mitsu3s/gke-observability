@@ -23,3 +23,6 @@ data:
         metrics:
           receivers: [otlp]
           exporters: [googlecloud]
+        logs:
+          receivers: [otlp]
+          exporters: [googlecloud]
